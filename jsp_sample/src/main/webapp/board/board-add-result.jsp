@@ -9,6 +9,7 @@
 <body>
 	<%@ include file="../db.jsp" %>
 	<%
+		String sessionId = (String)session.getAttribute("sessionId");
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String kind = request.getParameter("kind");
@@ -16,13 +17,18 @@
 		String query = "INSERT INTO TBL_BOARD VALUES ("
 				+ "BOARD_SEQ.NEXTVAL, " 
 				+ "'"+title+"', '"
-				+contents+"', "
-				+"'user01"+"', "
+				+contents+"', '"
+				+sessionId+"', "
 				+"0, "
 				+kind+", "
 				+"SYSDATE, SYSDATE)";
 		
-		//out.println(query);
+		
+		String query2 = String.format(
+				"INSERT INTO TBL_BOARD VALUES (BOARD_SEQ.NEXTVAL, '%s','%s', '%s', 0, '%s', SYSTDATE, SYSDATE)",
+				title,contents,sessionId,kind);
+		
+		//out.println(query2);
 		
 		int result = stmt.executeUpdate(query);
 		
